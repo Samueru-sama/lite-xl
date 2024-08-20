@@ -182,9 +182,8 @@ generate_appimage() {
     version="${version}-addons"
   fi
   
-  export "$VERSION"
   ./appimagetool -s deploy LiteXL.AppDir/usr/share/applications/*.desktop
-  ./appimagetool -s LiteXL.AppDir
+  VERSION="$VERSION" ./appimagetool -s LiteXL.AppDir
 }
 
 setup_appimagetool
