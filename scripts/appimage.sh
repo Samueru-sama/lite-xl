@@ -1,5 +1,6 @@
 #!/bin/env bash
 set -e
+export APPIMAGE_EXTRACT_AND_RUN=1
 
 if [ ! -e "src/api/api.h" ]; then
   echo "Please run this script from the root directory of Lite XL."
@@ -8,7 +9,7 @@ fi
 
 source scripts/common.sh
 
-ARCH="$(uname -m)"
+export ARCH="$(uname -m)"
 BUILD_DIR="$(get_default_build_dir)"
 RUN_BUILD=true
 STATIC_BUILD=false
@@ -85,7 +86,7 @@ fi
 
 setup_appimagetool() {
   if [ ! -e appimagetool ]; then
-    if ! wget -O appimagetool "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-${ARCH}.AppImage" ; then
+    if ! wget -O appimagetool "https://github.com/probonopd/go-appimage/releases/download/continuous/appimagetool-840-${ARCH}.AppImage" ; then
       echo "Could not download the appimagetool for the arch '${ARCH}'."
       exit 1
     else
@@ -180,8 +181,10 @@ generate_appimage() {
   if [[ $ADDONS == true ]]; then
     version="${version}-addons"
   fi
-
-  ./appimagetool --appimage-extract-and-run LiteXL.AppDir LiteXL${version}-${ARCH}.AppImage
+  
+  export "$VERSION"
+  ./appimagetool -s deploy LiteXL.AppDir/usr/share/applications/*.desktop
+  ./appimagetool -s LiteXL.AppDir
 }
 
 setup_appimagetool
