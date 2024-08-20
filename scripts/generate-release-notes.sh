@@ -58,7 +58,6 @@ main() {
   read -r last_version < <(gh release list --exclude-pre-releases --limit 1 | awk 'BEGIN {FS="\t"}; {print $3}')
   if [[ -z "$last_version" ]]; then
     echo "error: cannot get last release git tag"
-    exit 1
   fi
 
   export RELEASE_TAG="$version"
